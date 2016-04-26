@@ -179,7 +179,7 @@ gst_decklink_video_src_init (GstDecklinkVideoSrc * self)
 {
   self->mode = DEFAULT_MODE;
   self->caps_mode = GST_DECKLINK_MODE_AUTO;
-  self->caps_format = bmdFormat8BitYUV;
+  self->caps_format = bmdFormat10BitRGB;
   self->connection = DEFAULT_CONNECTION;
   self->device_number = 0;
   self->buffer_size = DEFAULT_BUFFER_SIZE;
@@ -330,7 +330,7 @@ gst_decklink_video_src_set_caps (GstBaseSrc * bsrc, GstCaps * caps)
   g_assert (mode != NULL);
 
   ret = self->input->input->EnableVideoInput (mode->mode,
-      bmdFormat8BitYUV, flags);
+      bmdFormat10BitRGB, flags);
   if (ret != S_OK) {
     GST_WARNING_OBJECT (self, "Failed to enable video input");
     return FALSE;

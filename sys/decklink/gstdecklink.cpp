@@ -342,6 +342,8 @@ gst_decklink_mode_get_structure (GstDecklinkModeEnum e, BMDPixelFormat f)
       gst_structure_set (s, "format", G_TYPE_STRING, "BGRA", NULL);
       break;
     case bmdFormat10BitRGB: /* 'r210' Big-endian RGB 10-bit per component with SMPTE video levels (64-960). Packed as 2:10:10:10 */
+      gst_structure_set (s, "format", G_TYPE_STRING, "r210", NULL);
+      break;
     case bmdFormat12BitRGB: /* 'R12B' Big-endian RGB 12-bit per component with full range (0-4095). Packed as 12-bit per component */
     case bmdFormat12BitRGBLE: /* 'R12L' Little-endian RGB 12-bit per component with full range (0-4095). Packed as 12-bit per component */
     case bmdFormat10BitRGBXLE: /* 'R10l' Little-endian 10-bit RGB with SMPTE video levels (64-940) */
@@ -379,6 +381,8 @@ gst_decklink_mode_get_template_caps (void)
     s = gst_decklink_mode_get_structure ((GstDecklinkModeEnum) i, bmdFormat8BitYUV);
     gst_caps_append_structure (caps, s);
     s = gst_decklink_mode_get_structure ((GstDecklinkModeEnum) i, bmdFormat8BitARGB);
+    gst_caps_append_structure (caps, s);
+    s = gst_decklink_mode_get_structure ((GstDecklinkModeEnum) i, bmdFormat10BitRGB);
     gst_caps_append_structure (caps, s);
   }
 
@@ -504,7 +508,7 @@ public:
     GST_INFO ("Video input format changed");
 
     if (formatFlags & bmdDetectedVideoInputRGB444)
-      pixelFormat = bmdFormat8BitARGB;
+      pixelFormat = bmdFormat10BitRGB;
 
     g_mutex_lock (&m_input->lock);
     m_input->input->PauseStreams ();
